@@ -54,7 +54,7 @@ class Expense(BaseModel):
 parser_agent = LlmAgent(
     name="parser_agent",
     model=Gemini(
-        model="gemini-flash-latest",
+        model="gemini-2.5-flash",
         retry_options=types.HttpRetryOptions(attempts=3),
     ),
     instruction=(
@@ -79,11 +79,13 @@ def route_expense(node_input: dict) -> Event:
 
 # Node 3: Automatically approve expenses under $100
 @node
-def auto_approve(node_input: dict) -> str:
+def auto_approve(node_input: dict):
     amount = node_input.get("amount", 0.0)
     merchant = node_input.get("merchant", "Unknown")
     purpose = node_input.get("purpose", "Unknown")
-    return f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been automatically approved."
+    msg = f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been automatically approved."
+    yield Event(content=types.Content(role="model", parts=[types.Part.from_text(text=msg)]))
+    yield Event(output=msg)
 
 
 # Node 4: Flag and request manual review for expenses >= $100
@@ -110,13 +112,11 @@ async def review_agent(ctx: Context, node_input: dict):
     merchant = node_input.get("merchant", "Unknown")
     purpose = node_input.get("purpose", "Unknown")
     if decision == "yes":
-        yield Event(
-            output=f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been approved by the reviewer."
-        )
+        msg = f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been approved by the reviewer."
     else:
-        yield Event(
-            output=f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been rejected by the reviewer."
-        )
+        msg = f"Expense of ${amount:.2f} at {merchant} for '{purpose}' has been rejected by the reviewer."
+    yield Event(content=types.Content(role="model", parts=[types.Part.from_text(text=msg)]))
+    yield Event(output=msg)
 
 
 # Connect nodes into a graph workflow using Edge objects for conditional routing

@@ -1,19 +1,7 @@
-# Project name used for resource naming
-project_name = "ambient-expense-agent"
-
-# Your Production Google Cloud project id
-prod_project_id = "your-production-project-id"
-
-# Your Staging / Test Google Cloud project id
-staging_project_id = "your-staging-project-id"
-
-# Your Google Cloud project ID that will be used to host the Cloud Build pipelines.
-cicd_runner_project_id = "your-cicd-project-id"
-
-repository_owner = "Your GitHub organization or username."
-
-# Name of the repository you added to Cloud Build
-repository_name = "ambient-expense-agent"
-
-# The Google Cloud region you will use to deploy the infrastructure
+staging_project_id = "my-agent-project-500020"
+prod_project_id = "project-285f4295-92e7-4bf0-94f"
+cicd_runner_project_id = "project-285f4295-92e7-4bf0-94f"
 region = "us-east1"
+repository_name = "ambient-expense-agent"
+repository_owner = "Katy-katy"
+create_repository = false
