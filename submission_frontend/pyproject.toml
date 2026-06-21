@@ -1,0 +1,18 @@
+[project]
+name = "submission_frontend"
+version = "0.1.0"
+description = "FastAPI manager dashboard frontend"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "google-adk[gcp]>=2.0.0,<3.0.0",
+    "google-cloud-aiplatform>=1.156.0",
+    "google-genai>=2.9.0",
+    "pydantic>=2.0.0",
+    "jinja2>=3.0.0",
+]
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
